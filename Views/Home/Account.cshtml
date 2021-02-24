@@ -1,0 +1,54 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    .header {
+        display: flex;
+        justify-content: space-around;
+        align-items: baseline;
+        margin-bottom: 30px;
+    }
+    form {
+        border: 3px lavender solid;
+        padding: 30px;
+        margin: 30px auto;
+        width: 60%;
+        border-radius: 10px;
+    }
+</style>
+@using BankAccounts.Models
+@model Transaction
+
+<div class="text-center">
+    <div class="header">
+        <h1>Welcome, @ViewBag.CurrentUser.FirstName </h1>
+        <h2 style="margin-top: 30px">Current balance: $@ViewBag.Balance</h2>
+    </div>
+
+    <form asp-action="Transaction" asp-controller="Home" method="post">
+        <div class="mb-3">
+            <label asp-for="Amount" class="form-label"></label>
+            <span asp-validation-for="Amount" class="text-danger"></span>
+            <input asp-for="Amount">
+            <input type="hidden" asp-for="UserId" value="@ViewBag.CurrentUser.UserId">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+            @foreach(var t in @ViewBag.CurrentUserTransaction)
+            {
+                <tr>
+                    <td>@t.Amount</td>
+                    <td>@t.CreatedAt</td>
+                </tr>
+            }
+    </table>
+
+    <h4><a href="/logout">Logout</a></h4>
+
+</div>
